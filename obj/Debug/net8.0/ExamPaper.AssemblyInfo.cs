@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExamPaper")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+29166511e881c75247e112bec6049e2725331f9a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1fe57da0748c122e6c138cbfa3aa7fb65c9ab980")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExamPaper")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExamPaper")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

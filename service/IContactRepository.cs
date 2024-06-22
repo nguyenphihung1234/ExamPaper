@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,6 @@ namespace ExamPaper.service
     {
          void AddContact(Contact contact);
         void FindContactByName(string name);
-        List<Contact> GetAllContacts();
+         Hashtable GetAllContacts();
     }
 }

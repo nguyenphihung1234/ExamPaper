@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Collections;
 using ExamPaper.model;
 using ExamPaper.service;
 
@@ -9,7 +6,7 @@ namespace ExamPaper.controller
 {
     public class ContactController
     {
-        private  IContactRepository contactService;
+        private readonly IContactRepository contactService;
 
         public ContactController(IContactRepository contactService)
         {
@@ -26,8 +23,9 @@ namespace ExamPaper.controller
             contactService.FindContactByName(name);
         }
 
-         public List<Contact> GetAllContacts(){
+        public Hashtable GetAllContacts()
+        {
             return contactService.GetAllContacts();
         }
     }
-    }
+}

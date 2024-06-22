@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ExamPaper.model;
+using System.Collections;
 using MySql.Data.MySqlClient;
+using ExamPaper.model;
 
 namespace ExamPaper.service
 {
     public class ContactService : IContactRepository
     {
-         private readonly string connectionString;
+        private readonly string connectionString;
 
         public ContactService(string connectionString)
         {
@@ -18,60 +16,87 @@ namespace ExamPaper.service
 
         public void AddContact(Contact contact)
         {
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                string query = "INSERT INTO Contacts (name, phone) VALUES (@Name, @Phone)";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@Name", contact.Name);
-                cmd.Parameters.AddWithValue("@Phone", contact.Phone);
-                cmd.ExecuteNonQuery();
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "INSERT INTO Contacts (name, phone) VALUES (@Name, @Phone)";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Name", contact.Name);
+                    cmd.Parameters.AddWithValue("@Phone", contact.Phone);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
 
         public void FindContactByName(string name)
         {
-             using (MySqlConnection conn = new MySqlConnection(connectionString))
+            try
             {
-                conn.Open();
-                string query = "SELECT * FROM Contacts WHERE name = @Name";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@Name", name);
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    conn.Open();
+                    string query = "SELECT * FROM Contacts WHERE name = @Name";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        Console.WriteLine($" Name: {reader.GetString("name")}, Phone: {reader.GetDouble("phone")}");
+                        while (reader.Read())
+                        {
+                            Console.WriteLine($"Name: {reader.GetString("name")}, Phone: {reader.GetDouble("phone")}");
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
 
-        public List<Contact> GetAllContacts()
+        public Hashtable GetAllContacts()
         {
-            List<Contact> contacts = new List<Contact>();
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            Hashtable contacts = new Hashtable();
+
+            try
             {
-                conn.Open();
-                string query = "SELECT * FROM Contacts";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    conn.Open();
+                    string query = "SELECT * FROM Contacts";
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        Contact contact = new Contact
+                        while (reader.Read())
                         {
-                            Name = reader.GetString("name"),
-                            Phone = reader.GetDouble("phone")
-                        };
-                        contacts.Add(contact);
+                            string name = reader.GetString("name");
+                            double phone = reader.GetDouble("phone");
+                            
+                            if (!contacts.ContainsKey(name))
+                            {
+                                contacts.Add(name, phone);
+                            }
+                            else
+                            {
+                                // Handle duplicate key according to your needs.
+                                // Example: Skip duplicates
+                                Console.WriteLine($"Duplicate key found: {name}. Skipping entry.");
+                            }
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
             return contacts;
         }
     }
-        }
-    
-
-
+}

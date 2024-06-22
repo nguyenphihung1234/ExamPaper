@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using ExamPaper.model;
 using ExamPaper.service;
 using ExamPaper.controller;
@@ -43,11 +44,18 @@ namespace ExamPaper
                         contactController.FindContactByName(searchName);
                         break;
                     case 3:
-                        List<Contact> contacts = contactController.GetAllContacts();
-                        Console.WriteLine("List of all contacts:");
-                        foreach (var contact in contacts)
+                        Hashtable contacts = contactController.GetAllContacts();
+                        Console.WriteLine("Contacts in Address Book:");
+                        if (contacts.Count == 0)
                         {
-                            Console.WriteLine($"Name: {contact.Name}, Phone: {contact.Phone}");
+                            Console.WriteLine("No contacts found.");
+                        }
+                        else
+                        {
+                            foreach (DictionaryEntry contact in contacts)
+                            {
+                                Console.WriteLine($"Name: {contact.Key}|   Phone: {contact.Value}");
+                            }
                         }
                         break;
                     case 4:
