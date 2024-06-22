@@ -7,6 +7,7 @@ namespace ExamPaper.model
 {
     public class Contact
     {
-        
+        private int id;
+        private string name; 
     }
 }
